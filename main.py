@@ -100,10 +100,8 @@ async def control_spaceship(canvas, row, column):
                 row = max_x - frame_rows - 1
             if column > max_y - frame_columns - 1:
                 column = max_y - frame_columns - 1
-            if column < 1:
-                column = 1
-            if row < 1:
-                row = 1
+            column = max(column, 1)
+            row = max(row, 1)
 
         draw_frame(canvas, row, column, SPACESHIP_FRAME)
         last_frame = SPACESHIP_FRAME
@@ -131,7 +129,7 @@ def draw(canvas):
                 coroutine.send(None)
             except StopIteration:
                 coroutines.remove(coroutine)
-        if len(coroutines) == 0:
+        if not coroutines:
             break
         canvas.refresh()
         time.sleep(TIC_TIMEOUT)
